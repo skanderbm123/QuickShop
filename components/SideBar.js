@@ -14,9 +14,8 @@ export default Sidebar = props => (
         </ImageBackground>
 
         <View style={styles.container}>   
-        <DrawerNavigatorItems {...props}/>
+            <DrawerNavigatorItems {...props}/>
         </View>
-        
     </ScrollView>
 );
 

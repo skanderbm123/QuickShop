@@ -1,78 +1,74 @@
-import React from 'react'
+import React, { Component } from 'react';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+var { width } = Dimensions.get("window")
 
-import {createAppContainer} from 'react-navigation'
-import {createDrawerNavigator} from 'react-navigation-drawer'
-import {Dimensions} from 'react-native'
+// import Components
+import Food from './src/Food'
+import Cart from './src/Cart'
+import Address from './src/Address'
+import Profile from './src/Profile'
+// unable console yellow
+console.disableYellowBox = true;
+// import icons
+import Icon from 'react-native-vector-icons/Ionicons';
 
-import {Feather} from '@expo/vector-icons'
-
-import {
-  ProfileScreen,
-  MessageScreen,
-  ActivityScreen,
-  ReportScreen,
-  SignOutScreen
-} from './front-end/screens'
-
-import SideBar from './components/SideBar'
-
-const DrawerNavigator = createDrawerNavigator(
-  {
-    ProfileScreen:{
-      screen:ProfileScreen,
-      navigationOptions:{
-        title:"Profile",
-        drawerIcon:({tintColor}) => <Feather name="user" size={16} color={tintColor} />
-      }
-    },
-    MessageScreen:{
-      screen:MessageScreen,
-      navigationOptions:{
-        title:"Message",
-        drawerIcon:({tintColor}) => <Feather name="message-square" size={16} color={tintColor} />
-      }
-    },
-    ActivityScreen:{
-      screen:ActivityScreen,
-      navigationOptions:{
-        title:"Activities",
-        drawerIcon:({tintColor}) => <Feather name="activity" size={16} color={tintColor} />
-      }
-    },
-    ReportScreen:{
-      screen:ReportScreen,
-      navigationOptions:{
-        title:"Report",
-        drawerIcon:({tintColor}) => <Feather name="bar-chart" size={16} color={tintColor} />
-      }
-    },
-    SignOutScreen:{
-      screen:SignOutScreen,
-      navigationOptions:{
-        title:"Sign Out",
-        drawerIcon:({tintColor}) => <Feather name="log-out" size={16} color={tintColor} />
-      }
-    }
-  },
-  {
-   contentComponent: props => <SideBar {...props}/>,
-   drawerWidth:Dimensions.get('window').width *0.80,
-   hideStatusBar:true,
+export default class App extends Component {
+constructor(props) {
+  super(props);
+  this.state = {
+    module:1,
+  };
+}
 
 
-   contentOptions:{
-     activeBackgroundColor:" rgba(212,118,207,0.2)",
-     activeTintColor:"#53115B",
-     itemsContainerStyle:{
-       marginTop:16,
-       marginHorizontal:8
-     },
-     itemStyle:{
-       borderRadius:4
-      }
-   }
+render() {
+    return (
+      <View style={{flex:1}}>
+         {
+          this.state.module==1? <Food />
+          :this.state.module==2? <Cart />
+          :this.state.module==3? <Address />
+          :<Profile />
+         }
+         <View style={styles.bottomTab}>
+           <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:1})}>
+             <Icon name="md-restaurant" size={30} color={this.state.module==1?"#900":"gray"} />
+             <Text>Food</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:2})}>
+             <Icon name="md-basket" size={30} color={this.state.module==2?"#900":"gray"} />
+             <Text>Cart</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:3})}>
+             <Icon name="md-map" size={30} color={this.state.module==3?"#900":"gray"} />
+             <Text>Address</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={styles.itemTab} onPress={()=>this.setState({module:4})}>
+             <Icon name="md-contact" size={30} color={this.state.module==4?"#900":"gray"} />
+             <Text>Profile</Text>
+           </TouchableOpacity>
+         </View>
+      </View>
+    );
   }
-);
+}
 
 
-export default createAppContainer(DrawerNavigator);
+  const styles = StyleSheet.create({
+    bottomTab:{
+      height:60,
+      width:width,
+      backgroundColor:'orange',
+      flexDirection:'row',
+      justifyContent:'space-between',
+      elevation:8,
+      shadowOpacity:0.3,
+      shadowRadius:50,
+    },
+    itemTab:{
+      width:width/4,
+      backgroundColor:'white',
+      alignItems:'center',
+      justifyContent:'center'
+    }
+  })
